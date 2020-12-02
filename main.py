@@ -9,6 +9,8 @@
 
 """
 import numpy as np
+import math
+import matplotlib.pyplot
 import geosig.Geometry as geom
 from geosig import Transform
 
@@ -25,3 +27,8 @@ if __name__ == "__main__":
     poly1 = geom.Polygon()
     poly1.setCoordinate([p1, p2, p3, p1])
     liste = Transform.Affine2DTransform(liste, 2, 3, 1, 1, 1, 1)
+    print(Transform.Rotation([p1], "y", math.pi).getCoordinate())
+    xy = poly1.getCoordinate()
+
+    matplotlib.pyplot.plot(x,y)
+    matplotlib.pyplot.show()

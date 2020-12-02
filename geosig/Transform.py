@@ -9,7 +9,9 @@
 
 """
 import numpy as np
+import math
 import geosig.Geometry as geom
+import geosig.Math
 
 
 def Affine2DTransform(collection, tx, ty, sx, sy, kx, ky):
@@ -39,4 +41,49 @@ def Affine2DTransform(collection, tx, ty, sx, sy, kx, ky):
             for point in geometry:
                 pointPolygon.append(Affine2DTransform(point, tx, ty, sx, sy, kx, ky))
         count += 1
+    if len(newCollection) == 1:
+        return newCollection[0]
     return newCollection
+
+
+def Rotation(collection, axis, angle):
+    """
+    Roration transformation around an axis.
+
+    :param collection: Collection of geometry.
+    :param axis: Axis of rotation. Must be x, y or z.
+    :param angle: Angle of rotation. Must be in rad.
+    :return: Transformed object.
+    """
+    try:
+        newCollection = list()
+        count = 0
+        for geometry in collection:
+            if isinstance(geometry, geom.Point):
+                axis = axis.lower()
+                xyz = geometry.getCoordinate()
+                x = xyz[0]
+                y = xyz[1]
+                if len(xyz) == 3:
+                    z = xyz[2]
+                else:
+                    xyz = [xyz[0], xyz[1], 0]
+                    z = 0
+
+                if axis == "x":
+                    y = math.cos(angle) * xyz[1] + math.sin(-angle) * xyz[2]
+                    z = math.sin(angle) * xyz[1] + math.cos(angle) * xyz[2]
+                if axis == "y":
+                    x = math.cos(angle) * xyz[0] + math.sin(angle) * xyz[2]
+                    z = math.sin(angle) * xyz[0] + math.cos(angle) * xyz[1]
+                if axis == "z":
+                    x = math.cos(angle) * xyz[0] + math.sin(-angle) * xyz[1]
+                    y = math.sin(angle) * xyz[0] + math.cos(angle) * xyz[1]
+                xyz = geosig.Math.NumberLimit([x, y, z])
+                newCollection.append(geom.Point(xyz))
+                count += 1
+        if len(newCollection) == 1:
+            return newCollection[0]
+        return newCollection
+    except Exception:
+        raise

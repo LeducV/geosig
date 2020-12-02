@@ -273,38 +273,6 @@ class Point(object):
         else:
             return [self.x, self.y, self.z]
 
-    def Rotation(self, axis, angle):
-        """
-        Roration transformation around an axis.
-
-        :param axis: Axis of rotation. Must be x, y or z.
-        :param angle: Angle of rotation. Must be in rad.
-        :return: Transformed object.
-        """
-        try:
-            axis = axis.lower()
-            x = None
-            y = None
-            z = None
-
-            if self.z is None:
-                self.z = 0
-            if axis == "x":
-                x = self.x
-                y = math.cos(angle) * self.y + math.sin(-angle) * self.z
-                z = math.sin(angle) * self.y + math.cos(angle) * self.z
-            if axis == "y":
-                x = math.cos(angle) * self.x + math.sin(angle) * self.z
-                y = self.y
-                z = math.sin(angle) * self.x + math.cos(angle) * self.y
-            if axis == "z":
-                x = math.cos(angle) * self.x + math.sin(-angle) * self.y
-                y = math.sin(angle) * self.x + math.cos(angle) * self.y
-                z = self.z
-            return Point([x, y, z])
-        except Exception:
-            raise
-
     def setCoordinate(self, array):
         """
         Set the coordinate of the point.
