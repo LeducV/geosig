@@ -1,4 +1,4 @@
-""" Module comportant les fonctions permettants d'écrire un fichier xml - geosig.
+""" Module use for creating a xml-gml document object.
 
  Copyright 2020 Vincent Leduc
 
@@ -30,7 +30,7 @@ def toGML(filepath, data):
     root = et.Element(XHTML + "FeatureCollection", nsmap=NSMAP)
     # Création du bbox.
     bbox = et.SubElement(root, XHTML + "boundedBy")
-    box = et.SubElement(bbox, XHTML +  "Box")
+    box = et.SubElement(bbox, XHTML + "Box")
     coord_bbox = et.SubElement(box,  XHTML + "coordinates", decimal='.', cs=',', ts=' ').text = "0 0 300 300"
 
     # Création de la structure de piétons.
